@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "xo";
+  src: url("/src/assets/xo.otf");
+}
+
+@theme {
+  --font-dm: "DM Sans", sans-serif;
+  --font-xo: "XO", monospace;
+}
+
+html, body, #root {
+  @apply h-full;
+}
+
+body {
+  @apply select-none bg-slate-900;
+}
+
+p {
+  @apply text-white text-lg font-dm;
+}
+
+h1 {
+  @apply text-3xl font-xo;
+}
+
+a {
+  @apply text-blue-500 font-dm hover:underline;
+}
+
+small {
+  @apply text-slate-500 text-xs sm:text-sm font-dm;
+}
+
+button {
+  @apply font-semibold font-dm cursor-pointer px-4 py-2 border rounded-lg;
+}
+
+.icon {
+  @apply aspect-square outline-offset-2;
+}
