@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "xo";
-  src: url("/src/assets/xo.otf");
+  font-family: "XO";
+  src: url("/src/assets/XO.otf");
 }
 
 @theme {
