@@ -22,7 +22,7 @@ npm run dev
 
 ## Demo
 
-TODO - link to demo
+Try out the demo [here](https://bucolic-tapioca-5f4d2f.netlify.app/)
 
 
 ## Contributing
