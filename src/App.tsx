@@ -11,7 +11,7 @@ const App = () => {
   const [winner, setWinner] = useState<string | null>(null);
   const [winningLine, setWinningLine] = useState<number[] | null>(null);
   const [isDraw, setIsDraw] = useState(false);
-  const [scoreGoal, setScoreGoal] = useState(2);
+  const [scoreGoal] = useState(10);
   // const [timer, setTimer] = useState(0);
   
   const handleClick = (i: number) => {
