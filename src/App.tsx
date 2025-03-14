@@ -11,7 +11,7 @@ const App = () => {
   const [winner, setWinner] = useState<string | null>(null);
   const [winningLine, setWinningLine] = useState<number[] | null>(null);
   const [isDraw, setIsDraw] = useState(false);
-  const [scoreGoal, setScoreGoal] = useState(10);
+  const [scoreGoal, setScoreGoal] = useState(2);
   // const [timer, setTimer] = useState(0);
   
   const handleClick = (i: number) => {
@@ -58,7 +58,7 @@ const App = () => {
   return (
     <div className="max-w-[96rem] h-full grid place-items-center m-auto">
       <div className="flex flex-col gap-3">
-        <p className={`${(winningLine || isDraw) ? "visible" : "invisible"} text-white font-semibold text-center mb-2`}>{isDraw ? "It's a draw!" : (isXNext ? "O won" : "X won")}{(score.X == scoreGoal || score.O == scoreGoal) ? " the game" : " the round"}!</p>
+        <p className={`${(winningLine || isDraw) ? "visible" : "invisible"} text-white font-semibold text-center mb-2`}>{isDraw ? "It's a draw!" : (isXNext ? "O won" : "X won")}{!isDraw && ((score.X == scoreGoal || score.O == scoreGoal) ? " the game!" : " the round!")}</p>
         <Scoreboard score={score} isXNext={isXNext} isDraw={isDraw} winner={winner} scoreGoal={scoreGoal} />
         <Table board={board} onClick={handleClick} isXNext={isXNext} winningLine={winningLine} />
         <div className={`${(winningLine || isDraw) ? "visible" : "invisible"} flex gap-3`}>
