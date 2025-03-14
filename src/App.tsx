@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { checkWinner, checkDraw } from "./utils";
+import { useReward } from "react-rewards";
 
 import Scoreboard from "./components/Scoreboard";
 import Table from "./components/Table";
@@ -13,6 +14,8 @@ const App = () => {
   const [isDraw, setIsDraw] = useState(false);
   const [scoreGoal] = useState(10);
   // const [timer, setTimer] = useState(0);
+
+  const { reward } = useReward("confetti", "confetti");
   
   const handleClick = (i: number) => {
     if(board[i] || winningLine)
@@ -30,10 +33,17 @@ const App = () => {
     if(result) {
       setWinner(result.winner);
       setWinningLine(result.line);
-      setScore((prevScore) => ({
-        ...prevScore,
-        [result.winner]: prevScore[result.winner] + 1,
-      }));
+      setScore((prevScore) => {
+        const newScore = {
+          ...prevScore,
+          [result.winner]: prevScore[result.winner] + 1,
+        }
+
+        if(newScore.X == scoreGoal || newScore.O == scoreGoal)
+          reward();
+
+        return newScore;
+      });
     } else {
       if(checkDraw(newBoard))
         setIsDraw(true);
@@ -57,7 +67,7 @@ const App = () => {
 
   return (
     <div className="max-w-[96rem] h-full grid place-items-center m-auto">
-      <div className="flex flex-col gap-3">
+      <div className="grid gap-3">
         <p className={`${(winningLine || isDraw) ? "visible" : "invisible"} text-white font-semibold text-center mb-2`}>{isDraw ? "It's a draw!" : (isXNext ? "O won" : "X won")}{!isDraw && ((score.X == scoreGoal || score.O == scoreGoal) ? " the game!" : " the round!")}</p>
         <Scoreboard score={score} isXNext={isXNext} isDraw={isDraw} winner={winner} scoreGoal={scoreGoal} />
         <Table board={board} onClick={handleClick} isXNext={isXNext} winningLine={winningLine} />
@@ -67,8 +77,8 @@ const App = () => {
           )}
           <button onClick={() => { resetGame(); setScore({ X: 0, O: 0 }); }} className="text-white bg-slate-700 hover:bg-slate-600 flex-1 border-slate-600">Reset</button>
         </div>
+        <button className={`${(winningLine || isDraw) ? "visible" : "invisible"} text-white bg-slate-700 hover:bg-slate-600 border-slate-600`}>Settings</button>
       </div>
-      <small className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2">Made with ❤️ by Sorin Gavra {/**&mdash; <a target="_blank" href="/">Source</a> */}</small>
     </div>
   )
 }
