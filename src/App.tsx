@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import { checkWinner, checkDraw } from "./utils";
 import { useReward } from "react-rewards";
+import { DEFAULT_SCORE_GOAL, DEFAULT_TURN_TIMER } from "./components/SettingsModal";
 
 import Scoreboard from "./components/Scoreboard";
 import Table from "./components/Table";
+import SettingsModal from "./components/SettingsModal";
 
 const App = () => {
   const [board, setBoard] = useState(Array(9).fill(null));
@@ -12,9 +14,10 @@ const App = () => {
   const [winner, setWinner] = useState<string | null>(null);
   const [winningLine, setWinningLine] = useState<number[] | null>(null);
   const [isDraw, setIsDraw] = useState(false);
-  const [scoreGoal] = useState(10);
-  // const [timer, setTimer] = useState(0);
-
+  const [scoreGoal, setScoreGoal] = useState(DEFAULT_SCORE_GOAL);
+  const [turnTimer, setTurnTimer] = useState(DEFAULT_TURN_TIMER);
+  const [turnTimeLeft, setTurnTimeLeft] = useState(DEFAULT_TURN_TIMER);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const { reward } = useReward("confetti", "confetti");
   
   const handleClick = (i: number) => {
@@ -65,21 +68,46 @@ const App = () => {
     setIsDraw(false);
   };
 
+  useEffect(() => {
+    if(winner || isDraw || turnTimer == 0)
+      return;
+
+    setTurnTimeLeft(turnTimer);
+
+    const interval = setInterval(() => {
+      setTurnTimeLeft((prev) => {
+        if(prev <= 1)
+          setIsXNext(!isXNext);
+
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [turnTimer, isXNext, winner, isDraw]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--timer-duration", `${turnTimer}s`);
+  }, [turnTimer]);
+
   return (
-    <div className="max-w-[96rem] h-full grid place-items-center m-auto">
-      <div className="grid gap-3">
-        <p className={`${(winningLine || isDraw) ? "visible" : "invisible"} text-white font-semibold text-center mb-2`}>{isDraw ? "It's a draw!" : (isXNext ? "O won" : "X won")}{!isDraw && ((score.X == scoreGoal || score.O == scoreGoal) ? " the game!" : " the round!")}</p>
-        <Scoreboard score={score} isXNext={isXNext} isDraw={isDraw} winner={winner} scoreGoal={scoreGoal} />
-        <Table board={board} onClick={handleClick} isXNext={isXNext} winningLine={winningLine} />
-        <div className={`${(winningLine || isDraw) ? "visible" : "invisible"} flex gap-3`}>
-          {(score.X != scoreGoal && score.O != scoreGoal) && (
-            <button onClick={resetGame} className="text-white bg-blue-600 hover:bg-blue-500 flex-2 border-blue-500">Play Again</button>
-          )}
-          <button onClick={() => { resetGame(); setScore({ X: 0, O: 0 }); }} className="text-white bg-slate-700 hover:bg-slate-600 flex-1 border-slate-600">Reset</button>
+    <>
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} winner={winner} isDraw={isDraw} scoreGoal={scoreGoal} setScoreGoal={setScoreGoal} turnTimer={turnTimer} setTurnTimer={setTurnTimer} />
+      <div className="max-w-[96rem] h-full grid place-items-center m-auto">
+        <div className="grid gap-3">
+          <p className={`${(winningLine || isDraw) ? "visible" : "invisible"} text-white font-semibold text-center mb-2`}>{isDraw ? "It's a draw!" : (isXNext ? "O won" : "X won")}{!isDraw && ((score.X == scoreGoal || score.O == scoreGoal) ? " the game!" : " the round!")}</p>
+          <Scoreboard score={score} isXNext={isXNext} isDraw={isDraw} winner={winner} scoreGoal={scoreGoal} turnTimer={turnTimer} turnTimeLeft={turnTimeLeft} />
+          <Table board={board} onClick={handleClick} isXNext={isXNext} winningLine={winningLine} />
+          <button onClick={() => setIsSettingsOpen(true)} className="btn-solid text-white bg-slate-700 hover:bg-slate-600 border-slate-600">Settings</button>
+          <div className={`${(winningLine || isDraw) ? "visible" : "invisible"} flex gap-3`}>
+            {(score.X != scoreGoal && score.O != scoreGoal) && (
+              <button onClick={resetGame} className="btn-solid text-white bg-blue-600 hover:bg-blue-500 flex-2 border-blue-500">Play Again</button>
+            )}
+            <button onClick={() => { resetGame(); setScore({ X: 0, O: 0 }); }} className="btn-solid text-white bg-slate-700 hover:bg-slate-600 flex-1 border-slate-600">Reset</button>
+          </div>
         </div>
-        <button className={`${(winningLine || isDraw) ? "visible" : "invisible"} text-white bg-slate-700 hover:bg-slate-600 border-slate-600`}>Settings</button>
       </div>
-    </div>
+    </>
   )
 }
 

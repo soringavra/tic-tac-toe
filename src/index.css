@@ -10,6 +10,10 @@
   --font-xo: "XO", monospace;
 }
 
+:root {
+  --timer-duration: 0s;
+}
+
 html, body, #root {
   @apply h-full;
 }
@@ -26,6 +30,14 @@ h1 {
   @apply text-3xl font-xo;
 }
 
+h2 {
+  @apply text-white text-xl font-bold font-dm;
+}
+
+h3 {
+  @apply text-slate-400 font-dm;
+}
+
 a {
   @apply text-blue-500 font-dm hover:underline;
 }
@@ -34,10 +46,31 @@ small {
   @apply text-slate-500 text-xs sm:text-sm font-dm;
 }
 
-button {
-  @apply font-semibold font-dm cursor-pointer px-4 py-2 border rounded-lg;
+input[type="tel"] {
+  @apply h-fit text-white font-dm bg-slate-900 px-3 py-2 border border-slate-600 focus:outline-2 outline-offset-2 outline-blue-400 rounded-md;
 }
 
-.icon {
-  @apply aspect-square outline-offset-2;
+button {
+  @apply font-semibold font-dm cursor-pointer rounded-lg;
+}
+
+.btn-solid {
+  @apply px-4 py-2 border;
+}
+
+.btn-icon {
+  @apply aspect-square;
+}
+
+.timer {
+  animation: timer linear var(--timer-duration);
+}
+
+@keyframes timer {
+  from {
+    height: 100%;
+  }
+  to {
+    height: 0%;
+  }
 }
