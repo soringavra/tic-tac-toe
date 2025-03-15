@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { checkWinner, checkDraw } from "./utils";
 import { useReward } from "react-rewards";
 import { DEFAULT_SCORE_GOAL, DEFAULT_TURN_TIMER } from "./components/SettingsModal";

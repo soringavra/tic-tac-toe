@@ -4,8 +4,6 @@ const Scoreboard = ({
   isDraw,
   winner,
   scoreGoal,
-  turnTimer,
-  turnTimeLeft,
 }: {
   score: { X: number, O: number },
   isXNext: boolean,
