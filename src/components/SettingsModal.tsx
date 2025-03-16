@@ -10,20 +10,20 @@ const TURN_TIMER_VALUES = [
     label: "Off"
   },
   {
+    value: 1,
+    label: "1s"
+  },
+  {
     value: 2,
     label: "2s"
   },
   {
+    value: 3,
+    label: "3s"
+  },
+  {
     value: 5,
     label: "5s"
-  },
-  {
-    value: 7,
-    label: "7s"
-  },
-  {
-    value: 10,
-    label: "10s"
   },
 ];
 
@@ -50,14 +50,13 @@ const SettingsModal = ({
     return null;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/[^0-9]/g, ""); // Remove non-numeric characters
+    let value = e.target.value.replace(/[^0-9]/g, "");
 
     if(value != "") {
       const num = parseInt(value, 10);
 
-      if(num >= 1 && num <= 99) {
+      if(num >= 1 && num <= 99)
         setScoreGoal(num);
-      }
     }
 
     e.target.value = value;
