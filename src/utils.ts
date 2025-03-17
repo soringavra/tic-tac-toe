@@ -46,6 +46,8 @@ const getBorder = (i: number) => {
     return "border-b";
   if(i == 6 || i == 7)
     return "border-r";
+  
+  return "";
 };
 
 export { checkWinner, checkDraw, getLinePosition, getBorder };

@@ -47,7 +47,7 @@ small {
 }
 
 input[type="tel"] {
-  @apply h-fit text-white font-dm bg-slate-900 px-3 py-2 border border-slate-600 focus:outline-2 outline-offset-2 outline-blue-400 rounded-md;
+  @apply h-fit text-white font-dm bg-slate-900 px-3 py-2 border border-slate-600 focus:outline-2 outline-offset-2 outline-blue-400 rounded-md disabled:opacity-50;
 }
 
 button {

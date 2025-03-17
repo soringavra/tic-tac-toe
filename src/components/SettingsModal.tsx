@@ -1,5 +1,5 @@
-import { X } from "lucide-react";
 import React from "react";
+import { X } from "lucide-react";
 
 export const DEFAULT_SCORE_GOAL = 10;
 export const DEFAULT_TURN_TIMER = 0;
@@ -32,6 +32,7 @@ const SettingsModal = ({
   onClose,
   winner,
   isDraw,
+  isStarted,
   scoreGoal,
   setScoreGoal,
   turnTimer,
@@ -41,6 +42,7 @@ const SettingsModal = ({
   onClose: () => void,
   winner: string | null,
   isDraw: boolean,
+  isStarted: boolean,
   scoreGoal: number,
   setScoreGoal: (scoreGoal: number) => void,
   turnTimer: number,
@@ -79,9 +81,9 @@ const SettingsModal = ({
             <h2>Score Goal</h2>
             <h3 className="max-w-96">Set the number of rounds a player must win to claim victory. (1&mdash;99)</h3>
           </div>
-          <input type="tel" onChange={handleChange} onBlur={(e) => {if(!e.target.value.length) e.target.value = DEFAULT_SCORE_GOAL.toString();}} maxLength={2} defaultValue={scoreGoal} className="w-16" />
+          <input type="tel" onChange={handleChange} onBlur={(e) => {if(!e.target.value.length) e.target.value = DEFAULT_SCORE_GOAL.toString();}} maxLength={2} defaultValue={scoreGoal} disabled={isStarted} className="w-16" />
         </div>
-        {(winner || isDraw) && (
+        {(winner || isDraw || !isStarted) && (
           <div className="flex flex-col gap-2 mt-4">
             <div className="flex flex-col gap-0.5">
               <h2>Turn Timer</h2>
