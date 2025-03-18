@@ -101,10 +101,10 @@ const App = () => {
           <p className={`${(winningLine || isDraw || !isStarted) ? "visible" : "invisible"} text-white font-semibold text-center mb-2`}>{!isStarted ? "Choose who starts first" : isDraw ? "It's a draw!" : (isXNext ? "O won" : "X won")}{!isDraw && isStarted && ((score.X == scoreGoal || score.O == scoreGoal) ? " the game!" : " the round!")}</p>
           <Scoreboard score={score} isXNext={isXNext} setIsXNext={setIsXNext} isDraw={isDraw} isStarted={isStarted} winner={winner} scoreGoal={scoreGoal} turnTimer={turnTimer} turnTimeLeft={turnTimeLeft} />
           <Table board={board} onClick={handleClick} isXNext={isXNext} winningLine={winningLine} isStarted={isStarted} setIsStarted={setIsStarted} />
-          <div className={`${(winningLine || isDraw || !isStarted) ? "visible" : "invisible"} ${!isStarted ? "flex-col-reverse" : "flex-col"} flex flex-col gap-2`}>
-            <button onClick={resetGame} className={`${winningLine || isDraw ? "visible" : "invisible"} btn-solid text-white bg-blue-600 hover:bg-blue-500 border-blue-500 hover:border-blue-500`}>Play Again</button>
+          <div className={`${(winningLine || isDraw || !isStarted) ? "visible" : "invisible"} ${!isStarted || score.X == scoreGoal || score.O == scoreGoal ? "flex-col-reverse" : "flex-col"} flex flex-col gap-2`}>
+            <button onClick={resetGame} className={`${(winningLine || isDraw) && score.X != scoreGoal && score.O != scoreGoal ? "visible" : "invisible"} btn-solid text-white bg-blue-600 hover:bg-blue-500 border-blue-500 hover:border-blue-500`}>Play Again</button>
             <div className="flex gap-2">
-              <button onClick={() => setIsSettingsOpen(true)} className="btn-solid text-white bg-slate-700 hover:bg-slate-600 flex-2 border-slate-600 hover:border-slate-500">Settings</button>
+              <button onClick={() => setIsSettingsOpen(true)} className={`${(!isStarted || winningLine || isDraw) && score.X != scoreGoal && score.O != scoreGoal ? "visible" : "invisible"} ${score.X != scoreGoal && score.O != scoreGoal ? "flex-2" : "flex-0"} ${score.X == scoreGoal || score.O == scoreGoal ? "hidden" : "invisible"} btn-solid text-white bg-slate-700 hover:bg-slate-600 border-slate-600 hover:border-slate-500`}>Settings</button>
               <button onClick={() => { resetGame(); setScore({ X: 0, O: 0 }); setIsStarted(false); }} className={`${winningLine || isDraw ? "visible" : "hidden"} btn-solid text-white bg-slate-700 hover:bg-slate-600 flex-1 border-slate-600 hover:border-slate-500`}>Reset</button>
             </div>
           </div>
